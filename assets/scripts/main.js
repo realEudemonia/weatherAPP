@@ -12,8 +12,22 @@ var weatherLineObj = new Object(),
     thunderstorm = "Storm in a teacup", // 200 - 232
     cold = "Cold enough to freeze the balls off a brass monkey"; // 903
 
+init();
 
 
+function init () {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        grabWeather(position.coords.latitude, position.coords.longitude);
+    });
+}
+
+
+function grabWeather (lat, long){
+    $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=743f41e57df418f0386f7dd674e238a4", function(json) {
+       weatherID = (json.weather[0].id);
+       return weatherID;
+    });
+}
 
 // API for weather call by zip code
 //api.openweathermap.org/data/2.5/weather?zip={45140},{USA}
