@@ -13,39 +13,17 @@ var weatherLineObj = {
     cold: "Cold enough to freeze the balls off a brass monkey" // 903
 };
 
-init();
+$(document).ready(function () {
+    init();
+});
+
 
 
 function init () {
     navigator.geolocation.getCurrentPosition(function (position) {
         grabWeather(position.coords.latitude, position.coords.longitude);
     });
-    switch (true){
-        //sunny
-        case weatherArr[0] === 800:
-            break;
-        //ice
-        case weatherArr[0] === 611:
-        case weatherArr[0] === 612:
-        case weatherArr[0] === 906:
-            break;
-        //tornado
-        case weatherArr[0] === 900:
-        case weatherArr[0] === 961:
-            break;
-        //cold
-        case weatherArr[0] === 903:
-            break;
-        //snow
-        case weatherArr[0] >= 600:
-            break;
-        //rain
-        case weatherArr[0] >= 300:
-            break;
-        //thunderstorm
-        case weatherArr[0] >= 200:
-            break;
-    }
+    insertWeatherData(weatherArr);
 }
 
 
@@ -53,14 +31,50 @@ function grabWeather (lat, long){
     $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=743f41e57df418f0386f7dd674e238a4", function(json) {
         weatherID = (json.weather[0].id);
         temp = (json.main.temp);
+        nameOfCity = (json.name)
         weatherArr.push(weatherID);
         weatherArr.push(temp);
+        weatherArr.push(nameOfCity);
        return weatherArr;
     });
 }
 
-function insertWeatherData (city, temp, phrase, icon){
-
+function insertWeatherData (params){
+    $(".city").append( "<p>" + params[0] + "</p>");
+    $(".temperature").append( "<p>" + params[1] + "</p>");
+    switch (true){
+        //sunny
+        case params[2] === 800:
+            $(".description").append( "<p>" + weatherLineObj.sunny + "</p>");
+            break;
+        //ice
+        case params[2] === 611:
+        case params[2] === 612:
+        case params[2] === 906:
+            $(".description").append( "<p>" + weatherLineObj.ice + "</p>");
+            break;
+        //tornado
+        case params[2] === 900:
+        case params[2] === 961:
+            $(".description").append( "<p>" + weatherLineObj.tornado + "</p>");
+            break;
+        //cold
+        case params[2] === 903:
+            $(".description").append( "<p>" + weatherLineObj.cold + "</p>");
+            break;
+        //snow
+        case params[2] >= 600:
+            $(".description").append( "<p>" + weatherLineObj.snow + "</p>");
+            break;
+        //rain
+        case params[2] >= 300:
+            $(".description").append( "<p>" + weatherLineObj.rain + "</p>");
+            break;
+        //thunderstorm
+        case params[2] >= 200:
+            $(".description").append( "<p>" + weatherLineObj.thunderstorm + "</p>");
+            break;
+    }
 }
 // API for weather call by zip code
 //api.openweathermap.org/data/2.5/weather?zip={45140},{USA}
