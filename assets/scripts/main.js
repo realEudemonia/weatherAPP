@@ -29,9 +29,9 @@ function init () {
 
 function grabWeather (lat, long){
     $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=743f41e57df418f0386f7dd674e238a4", function(json) {
-        weatherID = (json.weather[0].id);
-        temp = (json.main.temp);
-        nameOfCity = (json.name)
+        var weatherID = (json.weather[0].id);
+        var temp = (json.main.temp);
+        var nameOfCity = (json.name);
         weatherArr.push(weatherID);
         weatherArr.push(temp);
         weatherArr.push(nameOfCity);
@@ -43,10 +43,6 @@ function insertWeatherData (params){
     $(".city").append( "<p>" + params[0] + "</p>");
     $(".temperature").append( "<p>" + params[1] + "</p>");
     switch (true){
-        //sunny
-        case params[2] === 800:
-            $(".description").append( "<p>" + weatherLineObj.sunny + "</p>");
-            break;
         //ice
         case params[2] === 611:
         case params[2] === 612:
@@ -61,6 +57,10 @@ function insertWeatherData (params){
         //cold
         case params[2] === 903:
             $(".description").append( "<p>" + weatherLineObj.cold + "</p>");
+            break;
+        //sunny
+        case params[2] >= 800:
+            $(".description").append( "<p>" + weatherLineObj.sunny + "</p>");
             break;
         //snow
         case params[2] >= 600:
