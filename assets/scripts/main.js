@@ -2,7 +2,6 @@
  * Created by jason on 4/9/17.
  */
 //TODO find seven images to use with the weather changes API
-var weatherArr = [];
 var weatherLineObj = {
     sunny: "Cloud Nine", //800
     snow: "As white as snow", //600 - 622
@@ -23,55 +22,54 @@ function init () {
     navigator.geolocation.getCurrentPosition(function (position) {
         grabWeather(position.coords.latitude, position.coords.longitude);
     });
-    insertWeatherData(weatherArr);
 }
 
 
 function grabWeather (lat, long){
     $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=743f41e57df418f0386f7dd674e238a4", function(json) {
-        var weatherID = (json.weather[0].id);
-        var temp = (json.main.temp);
-        var nameOfCity = (json.name);
-        weatherArr.push(weatherID);
-        weatherArr.push(temp);
-        weatherArr.push(nameOfCity);
-       return weatherArr;
+        var weatherData = {};
+        var weatherArr = [];
+        weatherData['weatherID'] = (json.weather[0].id);
+        weatherData['temp'] = (Math.round((json.main.temp - 273.15) * 1.8 + 32));
+        weatherData['city'] = (json.name);
+        weatherArr.push(weatherData);
+        insertWeatherData(weatherArr[0]);
     });
 }
 
 function insertWeatherData (params){
-    $(".city").append( "<p>" + params[0] + "</p>");
-    $(".temperature").append( "<p>" + params[1] + "</p>");
+    $(".city").append("<p>" + params.city + "</p>");
+    $(".temperature").append("<p>" + params.temp + "</p>");
     switch (true){
         //ice
-        case params[2] === 611:
-        case params[2] === 612:
-        case params[2] === 906:
+        case params.weatherID === 611:
+        case params.weatherID === 612:
+        case params.weatherID === 906:
             $(".description").append( "<p>" + weatherLineObj.ice + "</p>");
             break;
         //tornado
-        case params[2] === 900:
-        case params[2] === 961:
+        case params.weatherID === 900:
+        case params.weatherID === 961:
             $(".description").append( "<p>" + weatherLineObj.tornado + "</p>");
             break;
         //cold
-        case params[2] === 903:
+        case params.weatherID === 903:
             $(".description").append( "<p>" + weatherLineObj.cold + "</p>");
             break;
         //sunny
-        case params[2] >= 800:
+        case params.weatherID >= 800:
             $(".description").append( "<p>" + weatherLineObj.sunny + "</p>");
             break;
         //snow
-        case params[2] >= 600:
+        case params.weatherID >= 600:
             $(".description").append( "<p>" + weatherLineObj.snow + "</p>");
             break;
         //rain
-        case params[2] >= 300:
+        case params.weatherID >= 300:
             $(".description").append( "<p>" + weatherLineObj.rain + "</p>");
             break;
         //thunderstorm
-        case params[2] >= 200:
+        case params.weatherID >= 200:
             $(".description").append( "<p>" + weatherLineObj.thunderstorm + "</p>");
             break;
     }
