@@ -83,7 +83,7 @@ function insertWeatherData (params){
 }
 
 function insertIcon(iconID) {
-    $(".icon").append("<img src = http://openweathermap.org/img/w/" + iconID + ".png" + "/>");
+    $(".icon").append("<img src = http://openweathermap.org/img/w/" + iconID + ".png " + ">");
 }
 // API for weather call by zip code
 //api.openweathermap.org/data/2.5/weather?zip={45140},{USA}
