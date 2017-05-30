@@ -32,6 +32,7 @@ function grabWeather (lat, long){
         weatherData['weatherID'] = (json.weather[0].id);
         weatherData['temp'] = (Math.round((json.main.temp - 273.15) * 1.8 + 32));
         weatherData['city'] = (json.name);
+        weatherData['weatherIcon'] = (json.weather[0].icon);
         weatherArr.push(weatherData);
         insertWeatherData(weatherArr[0]);
     });
@@ -46,11 +47,13 @@ function insertWeatherData (params){
         case params.weatherID === 612:
         case params.weatherID === 906:
             $(".description").append( "<p>" + weatherLineObj.ice + "</p>");
+            insertIcon(params.weatherIcon);
             break;
         //tornado
         case params.weatherID === 900:
         case params.weatherID === 961:
             $(".description").append( "<p>" + weatherLineObj.tornado + "</p>");
+            insertIcon(params.weatherIcon);
             break;
         //cold
         case params.weatherID === 903:
@@ -59,20 +62,28 @@ function insertWeatherData (params){
         //sunny
         case params.weatherID >= 800:
             $(".description").append( "<p>" + weatherLineObj.sunny + "</p>");
+            insertIcon(params.weatherIcon);
             break;
         //snow
         case params.weatherID >= 600:
             $(".description").append( "<p>" + weatherLineObj.snow + "</p>");
+            insertIcon(params.weatherIcon);
             break;
         //rain
         case params.weatherID >= 300:
             $(".description").append( "<p>" + weatherLineObj.rain + "</p>");
+            insertIcon(params.weatherIcon);
             break;
         //thunderstorm
         case params.weatherID >= 200:
             $(".description").append( "<p>" + weatherLineObj.thunderstorm + "</p>");
+            insertIcon(params.weatherIcon);
             break;
     }
+}
+
+function insertIcon(iconID) {
+    $(".icon").append("<img src = http://openweathermap.org/img/w/" + iconID + ".png" + "/>");
 }
 // API for weather call by zip code
 //api.openweathermap.org/data/2.5/weather?zip={45140},{USA}
