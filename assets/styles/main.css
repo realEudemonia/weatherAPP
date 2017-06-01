@@ -3,7 +3,13 @@ body {
     color: white;
 }
 
-
 .row {
     text-align: center;
+}
+
+.degree {
+    background: black;
+    color: red;
+    border-color: black;
+    cursor: pointer;
 }
