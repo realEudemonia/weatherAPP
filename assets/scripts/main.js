@@ -17,7 +17,7 @@ $(document).ready(function () {
     init();
 });
 
-//what I'm working on currently
+//what I'm working on currently BOOM
 $(".degree").on("click", function () {
     if (change === 0) {
         $(".degreeWording").html("&#8451");
